@@ -20,6 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,25 +84,14 @@ public class AliyunPush extends CordovaPlugin {
             ret = true;
         }
         else if ("bindTags".equalsIgnoreCase(action)) {
+            final String [] tags = getTagsFromArgs(args);
 
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
                     LOG.d(LOG_TAG, "PushManager#bindTags");
 
-                    List<String> tags = null;
-                    if (args != null && args.length() > 0) {
-                        int len = args.length();
-                        tags = new ArrayList<String>(len);
-
-                        for (int inx = 0; inx < len; inx++) {
-                            try {
-                                tags.add(args.getString(inx));
-                            } catch (JSONException e) {
-                                LOG.e(LOG_TAG, e.getMessage(), e);
-                            }
-                        }
-                        String[] array=tags.toArray(new String[tags.size()]);
-                        pushService.bindTag(pushService.ACCOUNT_TARGET, array, "", new CommonCallback() {
+                    if (tags != null && tags.length > 0) {
+                        pushService.bindTag(pushService.DEVICE_TARGET, tags, null, new CommonCallback() {
                             @Override
                             public void onSuccess(String s) {
                                 callbackContext.success(s);
@@ -119,25 +109,14 @@ public class AliyunPush extends CordovaPlugin {
             sendNoResultPluginResult(callbackContext);
             ret = true;
         } else if ("unbindTags".equalsIgnoreCase(action)) {
-
+            final String [] tags = getTagsFromArgs(args);
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
                     LOG.d(LOG_TAG, "PushManager#unbindTags");
 
-                    List<String> tags = null;
-                    if (args != null && args.length() > 0) {
-                        int len = args.length();
-                        tags = new ArrayList<String>(len);
+                    if (tags != null && tags.length > 0) {
 
-                        for (int inx = 0; inx < len; inx++) {
-                            try {
-                                tags.add(args.getString(inx));
-                            } catch (JSONException e) {
-                                LOG.e(LOG_TAG, e.getMessage(), e);
-                            }
-                        }
-                        String[] array=tags.toArray(new String[tags.size()]);
-                        pushService.unbindTag(pushService.ACCOUNT_TARGET,array,"",new CommonCallback(){
+                        pushService.unbindTag(pushService.DEVICE_TARGET,tags,"",new CommonCallback(){
                             @Override
                             public void onFailed(String s, String s1) {
                                 resError(callbackContext,s,s1);
@@ -160,7 +139,7 @@ public class AliyunPush extends CordovaPlugin {
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
                     LOG.d(LOG_TAG, "PushManager#listTags");
-                        pushService.listTags(pushService.ACCOUNT_TARGET,new CommonCallback(){
+                        pushService.listTags(pushService.DEVICE_TARGET,new CommonCallback(){
                             @Override
                             public void onFailed(String s, String s1) {
                                 resError(callbackContext,s,s1);
@@ -178,8 +157,32 @@ public class AliyunPush extends CordovaPlugin {
             sendNoResultPluginResult(callbackContext);
             ret = true;
         }
-
+    
         return ret;
+    }
+
+
+    /**
+     * 将json字符串转换为列表
+     * @param args json字符串
+     * @return tags的列表
+     */
+    private String[] getTagsFromArgs(JSONArray args) throws JSONException{
+        List<String> tags = null;
+        args = args.getJSONArray(0);
+        if (args != null && args.length() > 0) {
+            int len = args.length();
+            tags = new ArrayList<String>(len);
+            for (int inx = 0; inx < len; inx++) {
+                try {
+                    tags.add(args.getString(inx));
+                } catch (JSONException e) {
+                    LOG.e(LOG_TAG, e.getMessage(), e);
+                }
+            }
+        }
+
+        return tags.toArray(new String[tags.size()]);
     }
    private void resError(CallbackContext callbackContext,String reason, String res){
        LOG.d(LOG_TAG,"onFailed reason:"+reason+"res:"+res);

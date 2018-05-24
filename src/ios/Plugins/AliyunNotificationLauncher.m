@@ -283,8 +283,8 @@
     // 处理iOS 10通知，并上报通知打开回执
     [self handleiOS10Notification:notification];
     
-    // 通知不弹出
-    completionHandler(UNNotificationPresentationOptionNone);
+    // 通知弹出
+    completionHandler(UNNotificationPresentationOptionAlert);
 }
 
 /**
@@ -326,7 +326,7 @@
         [newContent removeObjectForKey:@"m"];
         [newContent addEntriesFromDictionary:dict];
         
-        [newContent setObject:@"notificationReceivedInApp" forKey:@"type"];
+        [newContent setObject:@"notificationOpened" forKey:@"type"];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:@"AliyunNotification" object:newContent];
     });
