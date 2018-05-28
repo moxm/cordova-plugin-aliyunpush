@@ -1,31 +1,35 @@
 module.exports = function(context) {
 
-  var fs = context.requireCordovaModule('fs'),
-    path = context.requireCordovaModule('path');
+    var fs = context.requireCordovaModule('fs'),
+        path = context.requireCordovaModule('path');
 
-  var platformRoot = path.join(context.opts.projectRoot, 'platforms/android');
+    var platformRoot = path.join(context.opts.projectRoot, 'platforms/android');
 
 
-  var manifestFile = path.join(platformRoot, 'AndroidManifest.xml');
+    var manifestFile = path.join(platformRoot, 'AndroidManifest.xml');
 
-  if (fs.existsSync(manifestFile)) {
+    if (!fs.existsSync(manifestFile)) {
+        manifestFile = path.join(platformRoot, 'app/src/main/AndroidManifest.xml');
+    }
 
-    fs.readFile(manifestFile, 'utf8', function(err, data) {
-      if (err) {
-        throw new Error('Unable to find AndroidManifest.xml: ' + err);
-      }
+    if (fs.existsSync(manifestFile)) {
 
-      var appClass = 'com.leo.aliyunpush.MainApplication';
+        fs.readFile(manifestFile, 'utf8', function(err, data) {
+            if (err) {
+                throw new Error('Unable to find AndroidManifest.xml: ' + err);
+            }
 
-      if (data.indexOf(appClass) != -1) {
+            var appClass = 'com.leo.aliyunpush.MainApplication';
 
-        var result = data.replace('android:name="' + appClass + '"', '');
+            if (data.indexOf(appClass) != -1) {
 
-        fs.writeFile(manifestFile, result, 'utf8', function(err) {
-          if (err) throw new Error('Unable to write into AndroidManifest.xml: ' + err);
-        })
-        console.log('android application [android:name="' + appClass + '"] has removed');
-      }
-    });
-  }
+                var result = data.replace('android:name="' + appClass + '"', '');
+
+                fs.writeFile(manifestFile, result, 'utf8', function(err) {
+                    if (err) throw new Error('Unable to write into AndroidManifest.xml: ' + err);
+                })
+                console.log('android application [android:name="' + appClass + '"] has removed');
+            }
+        });
+    }
 };
