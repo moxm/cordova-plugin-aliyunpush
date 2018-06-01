@@ -360,7 +360,7 @@
 #pragma mark - 绑定标签
 - (void)bindTagsWithTags:(NSArray *)tags andCallback:(void (^)(BOOL result))callback{
     
-    [CloudPushSDK bindTag:2 withTags:tags
+    [CloudPushSDK bindTag:1 withTags:tags
                 withAlias:@""
              withCallback:^(CloudPushCallbackResult *res) {
 
@@ -372,7 +372,7 @@
 #pragma mark - 解除标签
 - (void)unbindTagsWithTags:(NSArray *)tags andCallback:(void (^)(BOOL result))callback{
     
-    [CloudPushSDK unbindTag:2 withTags:tags withAlias:@"" withCallback:^(CloudPushCallbackResult *res) {
+    [CloudPushSDK unbindTag:1 withTags:tags withAlias:@"" withCallback:^(CloudPushCallbackResult *res) {
         callback(res.success);
     }];
 }
