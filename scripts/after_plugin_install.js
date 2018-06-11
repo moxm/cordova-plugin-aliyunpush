@@ -5,7 +5,11 @@ module.exports = function(context) {
 
     var platformRoot = path.join(context.opts.projectRoot, 'platforms/android');
 
-
+    var plugins = context.opts.plugins || [];
+    // The plugins array will be empty during platform add
+    if (plugins.length > 0 && plugins.indexOf('cordova-plugin-aliyunpush') === -1) {
+        return;
+    }
     var manifestFile = path.join(platformRoot, 'AndroidManifest.xml');
     if (!fs.existsSync(manifestFile)) {
         manifestFile = path.join(platformRoot, 'app/src/main/AndroidManifest.xml');
