@@ -17,7 +17,7 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="cordova-plugin-aliyunpush" version="0.0.1">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="cordova-plugin-aliyunpush" version="1.0.0">
     <hook type="after_plugin_install" src="scripts/after_plugin_install.js" />
     <hook type="before_plugin_rm" src="scripts/before_plugin_rm.js" />
     <preference name="ANDROID_KEY" default="" />
