@@ -57,6 +57,12 @@
     
 }
 
+- (void)applicationDidBecomeActive:(UIApplication * )application {
+
+    NSLog(@"---applicationDidBecomeActive----")
+    // 进入前台
+     [[AliyunNotificationLauncher sharedAliyunNotificationLauncher] applicationDidBecomeActive:application];
+}
 
 
 @end
