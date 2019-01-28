@@ -333,6 +333,15 @@
    
 }
 
+/* 应用启动时清除角标 */
+- (void)applicationDidBecomeActive:(UIApplication * )application {
+    // 通知角标数清0
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    // 同步角标数到服务端
+    [self syncBadgeNum:0];
+    // 通知打开回执上报
+    // [CloudPushSDK sendNotificationAck:userInfo];
+}
 
 /* 同步通知角标数到服务端 */
 - (void)syncBadgeNum:(NSUInteger)badgeNum {
