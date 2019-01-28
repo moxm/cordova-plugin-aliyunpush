@@ -310,7 +310,7 @@
     // 通知角标数清0
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     // 同步角标数到服务端
-    // [self syncBadgeNum:0];
+    [self syncBadgeNum:0];
     // 通知打开回执上报
     [CloudPushSDK sendNotificationAck:userInfo];
     NSLog(@"Notification, date: %@, title: %@, subtitle: %@, body: %@, badge: %d, extras: %@.", noticeDate, title, subtitle, body, badge, extras);
