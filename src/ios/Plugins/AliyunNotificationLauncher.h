@@ -15,6 +15,8 @@
 
 - (void)didFinishLaunchingWithOptions:(NSDictionary *)launchOptions andApplication:(UIApplication *)application;
 
+- (void)applicationDidBecomeActive:(UIApplication * )application;
+
 #pragma mark - application notification delegate
 
 - (void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken;
